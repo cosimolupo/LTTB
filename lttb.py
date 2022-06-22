@@ -149,7 +149,8 @@ class LTTB:
 		self.Bias = np.zeros((self.O))
 
 	def initialize (self, par):
-
+        
+		self.T = par['T']
 		self.t = 0
 
 		self.S_soma = np.zeros((self.N,self.T))
@@ -166,6 +167,9 @@ class LTTB:
 
 		self.B = np.zeros((self.N,self.T))
 		self.B_rec = np.zeros((self.N,self.T))
+		
+		self.B_total = np.zeros((self.N,self.T))
+		self.B_filt_total = np.zeros((self.N,self.T))
 
 		self.B_filt = np.zeros((self.N,self.T))
 		self.B_filt_rec = np.zeros((self.N,self.T))
@@ -223,6 +227,9 @@ class LTTB:
 
 		self.B[:,t+1]  = self.S_wind_soma[:,t+1]*self.S_apic_dist[:,t+1]
 		self.B_rec[:,t+1]  = self.S_wind_soma[:,t+1]*self.S_apic_prox[:,t+1]
+		
+		self.B_total[:,t+1] = np.heaviside( self.B[:,t+1] + self.B_rec[:,t+1] - 1 , 1 )
+		self.B_filt_total[:,t+1]   = self.B_filt_total[:,t]*beta_targ + self.B_total[:,t+1]*(1-beta_targ)
 
 		self.B_filt[:,t+1]   = self.B_filt[:,t]*beta_targ + self.B[:,t+1]*(1-beta_targ)
 		self.B_filt_rec[:,t+1]   = self.B_filt_rec[:,t]*beta_targ + self.B_rec[:,t+1]*(1-beta_targ)
@@ -231,4 +238,4 @@ class LTTB:
 		self.S_wind_targ[:,t+1] = np.heaviside( self.B_filt[:,t+1] - self.burstThreshold , 1)
 
 		self.S_wind_targ_filt[:,t+1] = self.S_wind_targ_filt[:,t]*beta_ro + self.S_wind_targ[:,t+1]*(1-beta_ro)
-		self.S_wind[:,t+1] = np.heaviside( self.S_wind_pred[:,t+1]+ self.S_wind_targ[:,t+1] - 1 , 1  )
+		self.S_wind[:,t+1] = np.heaviside( self.S_wind_pred[:,t+1] + self.S_wind_targ[:,t+1] - 1 , 1 )
