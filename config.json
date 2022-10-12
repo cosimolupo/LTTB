@@ -24,7 +24,8 @@
         "sigma_wrec" : 0,
         "sigma_Jout" : 0.1,
         "eta" : 10,
-        "eta_out" : 0.01
+        "eta_out" : 0.01,
+        "eta_bias": 0
     },
 
     "FIGURE_2" : {
