@@ -13,7 +13,7 @@
         "tau_ro" : 0.010,
         "tau_star" : 0.020,
         "tau_W" : 0.200,
-        "sigma_targ" : 20,
+        "sigma_targ" : 10,
         "sigma_in" : 12,
         "sigma_apical_cont" : 0,
         "sigma_basal_cont" : 0,
